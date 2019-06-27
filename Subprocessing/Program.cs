@@ -12,9 +12,8 @@ namespace Subprocessing
         static string Subprocess(string _FileName, string _args) {
 
             // Define where python is on $PATH
-            string python = $@"{_FileName}";
-            Console.WriteLine(python);
-            ProcessStartInfo myProcessStartInfo = new ProcessStartInfo(python);
+            string executable = $@"{_FileName}";
+            ProcessStartInfo myProcessStartInfo = new ProcessStartInfo(executable);
 
             // Read STDOUT, via `python -c "print(foo)"`
             myProcessStartInfo.UseShellExecute = false;
@@ -28,14 +27,14 @@ namespace Subprocessing
             script.Start();
 
             // Get the results
-            StreamReader pyOutReader = script.StandardOutput;
-            string csInReader = pyOutReader.ReadLine();
+            StreamReader outReader = script.StandardOutput;
+            string dotnetInReader = outReader.ReadLine();
 
             // Avoid deadlock
             script.WaitForExit();
             script.Close();
 
-            return csInReader;
+            return dotnetInReader;
         }
         public static void Main()
         {
